@@ -1,18 +1,15 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from datetime import datetime
 
-from routes.login import loginRouter
+from .routes.auth import router as auth_router
 
 app = FastAPI()
-start_time = datetime.now()
 
+start_time = datetime.now()
 PORT = 8000
 
-@app.get("/")
-def read_root():
-    return {"Welcome to the login service"}
-
-@   app.get('/ping')
+# ping returns the status of the service
+@app.get('/ping')
 def ping():
     return {
             "status": "ok",
@@ -20,7 +17,7 @@ def ping():
             "port": PORT 
         }
 
-app.include_router(loginRouter)
+app.include_router(auth_router)
 
 if __name__ == "__main__":
     import uvicorn
