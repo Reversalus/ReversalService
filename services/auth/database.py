@@ -1,4 +1,3 @@
-
 from dotenv import load_dotenv
 import boto3
 from botocore.exceptions import ClientError
@@ -11,7 +10,10 @@ from datetime import datetime, timedelta
 envpath = os.path.join(os.path.dirname(__file__),'.env')
 load_dotenv(dotenv_path=envpath)
 
-dynamodb = boto3.resource('dynamodb')
+
+aws_region = os.getenv('AWS_REGION')
+
+dynamodb = boto3.resource('dynamodb', region_name=aws_region)
 
 # inst a table.
 otp_table = dynamodb.Table('otp')
