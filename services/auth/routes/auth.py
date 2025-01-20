@@ -1,15 +1,14 @@
 from decimal import Decimal
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
-from typing import Annotated
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from datetime import timedelta, datetime
-from ..database import storeOTP, getOTP, verifyOTP
-from ..models import ResponseModel, UserPayload, OTPPayload, Token
-from ..utils.token_util import create_access_token
+from database import storeOTP, getOTP, verifyOTP
+from models import ResponseModel, UserPayload, OTPPayload, Token
+from utils.token_util import create_access_token
 from dotenv import  load_dotenv
 import os
 
