@@ -1,7 +1,11 @@
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8
 
+# Set the working directory
+WORKDIR /app
+
 COPY ./requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
+
 
 COPY ./ /app
 

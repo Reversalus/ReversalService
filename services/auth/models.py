@@ -1,15 +1,12 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.sql import text
+from sqlalchemy.ext.declarative import declarative_base
 from pydantic import BaseModel, Field
 from typing import Optional, Any
+import uuid
 
-# Define User ORM Model:
-# class Users(Base):
-#     __tablename__ = 'users'
-
-#     phone_number = Column(Integer, primary_key=True, index=True)
-
-#     class Config:
-#         orm_mode = True
+Base = declarative_base()
 
 
 # Response Model:
@@ -31,3 +28,20 @@ class OTPPayload(BaseModel):
 class Token(BaseModel):
     token: str
     token_type: str
+
+# Define User ORM Model:
+class User(Base):
+    __tablename__ = 'users'
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default = uuid.uuid4, server_default=text("uuid_generate_v4()"))
+    first_name = Column(String(50), nullable=False)
+    middle_name = Column(String(50), nullable=True)
+    last_name = Column(String(50), nullable=False)
+    email = Column(String(150), unique=True, nullable=True)
+    phone = Column(String(20), unique=True, nullable=False)
+    profile_image_uri = Column(Text, nullable=True)
+    auth_google = Column(Boolean, default=False, server_default=text("false"))
+    auth_phone = Column(Boolean, default=False, server_default=text("false"))
+    created_at = Column(DateTime, server_default=text("CURRENT_TIMESTAMP "))
+    updated_at = Column(DateTime, server_default=text("CURRENT_TIMESTAMP "), onupdate=text("CURRENT_TIMESTAMP "))
+

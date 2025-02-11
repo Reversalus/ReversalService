@@ -1,10 +1,55 @@
 services:
+  postgres:
+    image: postgres:latest
+    container_name: my-postgres-db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - E:/docker-data/postgres:/var/lib/postgresql/data
+    profiles:
+      - db  # Profile for database-related services
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: shubhamrim@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    profiles:
+      - db  # Profile for database-related services
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - E:/docker-data/redis:/var/lib/redis/data
+    command: ["redis-server", "--appendonly", "yes"]
+    profiles:
+      - db  # Profile for database-related services
+
   gateway:
     build: 
       context: ./services/gateway
     container_name: gateway_service
     ports:
       - "8000:8000"
+    profiles:
+      - app  # Profile for application services
+    volumes:
+    - ./services/gateway:/app  # Mount local code inside the container
   
   auth:
     build:
@@ -12,4 +57,8 @@ services:
     container_name: auth_service
     ports:
       - "8001:8000"
+    profiles:
+      - app  # Profile for application services
+    volumes:
+    - ./services/auth:/app  # Mount local code inside the container
   

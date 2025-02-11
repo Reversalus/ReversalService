@@ -9,7 +9,7 @@ from datetime import datetime
 
 from routes.auth import router as auth_router
 
-app = FastAPI()
+app = FastAPI(title="Auth Service")
 
 start_time = datetime.now()
 PORT = 8001

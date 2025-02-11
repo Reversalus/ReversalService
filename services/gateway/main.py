@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request, Depends
 import httpx
 
-from middleware.validation_middleware import validate_header_source
+from middleware.header_validation_middleware import validate_header_source
 
 app = FastAPI(title="API Gateway")
 
